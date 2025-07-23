@@ -1,0 +1,21 @@
+{
+  "name": "test-acdmp-mahery",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "acdmp": "index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "commander": "^14.0.0",
+    "fflate": "^0.8.2",
+    "pdfreader": "^3.0.7"
+  }
+}
