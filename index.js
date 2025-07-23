@@ -1,3 +1,6 @@
 #!/usr/bin/env node
+const App = require("./src/App.js")
 
-console.log("Hello world")
+// run the application
+const appInstance = new App()
+appInstance.run()
