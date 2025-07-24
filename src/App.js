@@ -3,7 +3,6 @@ const program = new Command()
 const { TITLE, VERSION, DESCRIPTION, COMMAND_NAME, COMMAND_DESCRIPTION } = require('./utils/constants')
 const fs = require('fs')
 const { unzipSync } = require('fflate')
-const path = require('path')
 const { PdfReader } = require('pdfreader')
 
 class App {
@@ -32,7 +31,7 @@ class App {
 
     async #actionFromCommand(zipPath) {
         if (!fs.existsSync(zipPath)) {
-            console.error(`Le fichier ${zipPath} n'existe pas.`)
+            console.error(`❌ Le fichier "${zipPath}" n'existe pas.`)
             return
         }
 
@@ -47,6 +46,11 @@ class App {
                 return
             }
 
+            /**
+             * array representing the content of each files
+             * file content will be inserted inside this array one by one in the loop below
+             * @type {[{Fichiers: string, Contenu: string}]} filesContent
+             */
             let filesContent = []
             
             for (const [filename, data] of Object.entries(files)) {
@@ -72,6 +76,7 @@ class App {
                     });
                 })
             }
+
             console.table(filesContent)
         } catch (e) {
             console.error('❌ Une erreur est survenue lors de l\'extraction du ZIP:', e.message);
