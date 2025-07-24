@@ -4,6 +4,7 @@ const { TITLE, VERSION, DESCRIPTION, COMMAND_NAME, COMMAND_DESCRIPTION } = requi
 const fs = require('fs')
 const { unzipSync } = require('fflate')
 const { PdfReader } = require('pdfreader')
+const parseDDMMYYYY = require('./utils/date')
 
 class App {
 
@@ -65,10 +66,9 @@ class App {
                             reject(err)
                         } else if (item && item.text) {
                             const dateMatch = item.text.match(/(\d{1,2}\/\d{1,2}\/\d{4})/)
-
                             filesContent.push({Fichiers: filename, Contenu: item.text, "Date de validité": dateMatch ? dateMatch[0] : 'Non spécifiée'});
-                            
-                            if (dateMatch && dateMatch < new Date().toLocaleDateString('fr-FR')) {
+                            const parsedMatchedDate = dateMatch ? parseDDMMYYYY(dateMatch[0]) : null
+                            if (dateMatch && parsedMatchedDate < new Date()) {
                                 console.warn(`⚠️  Le fichier "${filename}" contient une date de validité expirée : ${dateMatch[0]}.`);
                             }
 
