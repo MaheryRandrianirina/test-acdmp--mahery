@@ -27,9 +27,9 @@
 ### Exemple de flow
 
 - cloner le depot
-- aller dans le dossier du projet avec la commande `cd test-acdmp-mahery`
+- aller dans le dossier du projet avec la commande `cd test-acdmp--mahery`
 - executer la commande `npm install`
 - execuer la commande `npm link`
-- executer la commande `acdmp run Dossier_Test_ACDMP.zip`
+- executer la commande `acdmp run Dossier_Test_ACDMP.zip`. Ici le fichier zip "Dossier_Test_ACDMP.zip" se trouve dans le meme dossier que le projet.
 
 
