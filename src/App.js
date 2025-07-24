@@ -7,6 +7,14 @@ const path = require('path')
 
 class App {
 
+    // files inside the zip file
+    #filesInTheZip = [
+        "Attestation_Fiscale.pdf",
+        "DC1.pdf",
+        "Kbis.pdf",
+        "Note_Interne.pdf"
+    ]
+
     run(){
         program
             .name(TITLE)
@@ -25,12 +33,25 @@ class App {
                     const fileBuffer = fs.readFileSync(zipPath)
                     const files = unzipSync(fileBuffer)
                     const outDir = path.join(process.cwd(), path.parse(zipPath).name)
-                    
+    
+                    // verify if the zip contains the expected files
+                    const missingFiles = this.#filesInTheZip.filter(file => !Object.keys(files).includes(file));
+                    if (missingFiles.length > 0) {
+                        console.warn(`❌ Attention : Le fichier ZIP ne contient pas les fichiers suivants : ${missingFiles.join(', ')}.`);
+                        return
+                    }
+
+
                     if (!fs.existsSync(outDir)) {
                         fs.mkdirSync(outDir);
                     }
-    
+
                     for (const [filename, data] of Object.entries(files)) {
+                        if( !this.#filesInTheZip.includes(filename)) {
+                            console.warn(`Le fichier ${filename} n'est pas reconnu et ne sera pas extrait.`);
+                            break
+                        }
+
                         const filePath = path.join(outDir, filename);
                         const dirPath = path.dirname(filePath);
                       
