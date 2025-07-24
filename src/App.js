@@ -43,8 +43,7 @@ class App {
             // verify if the zip is missing files
             const missingFiles = this.#filesInTheZip.filter(file => !Object.keys(files).includes(file));
             if (missingFiles.length > 0) {
-                console.warn(`❌ Attention : Le fichier ZIP ne contient pas les fichiers suivants : ${missingFiles.join(', ')}.`);
-                return
+                console.warn(`⚠️  Attention : Le fichier ZIP ne contient pas les fichiers suivants : ${missingFiles.join(', ')}.`);
             }
 
             /**
