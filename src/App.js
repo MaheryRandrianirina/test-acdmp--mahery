@@ -64,9 +64,10 @@ class App {
                         if (err) {
                             reject(err)
                         } else if (item && item.text) {
-                            filesContent.push({Fichiers: filename, Contenu: item.text});
-
                             const dateMatch = item.text.match(/(\d{1,2}\/\d{1,2}\/\d{4})/)
+
+                            filesContent.push({Fichiers: filename, Contenu: item.text, "Date de validité": dateMatch ? dateMatch[0] : 'Non spécifiée'});
+                            
                             if (dateMatch && dateMatch < new Date().toLocaleDateString('fr-FR')) {
                                 console.warn(`⚠️  Le fichier "${filename}" contient une date de validité expirée : ${dateMatch[0]}.`);
                             }
