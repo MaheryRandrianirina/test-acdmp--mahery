@@ -4,6 +4,7 @@ const { TITLE, VERSION, DESCRIPTION, COMMAND_NAME, COMMAND_DESCRIPTION } = requi
 const fs = require('fs')
 const { unzipSync } = require('fflate')
 const path = require('path')
+const { PdfReader } = require('pdfreader')
 
 class App {
 
@@ -41,24 +42,24 @@ class App {
                         return
                     }
 
-
-                    if (!fs.existsSync(outDir)) {
-                        fs.mkdirSync(outDir);
-                    }
-
+                    
                     for (const [filename, data] of Object.entries(files)) {
                         if( !this.#filesInTheZip.includes(filename)) {
                             console.warn(`Le fichier ${filename} n'est pas reconnu et ne sera pas extrait.`);
-                            break
+                            continue
                         }
 
-                        const filePath = path.join(outDir, filename);
-                        const dirPath = path.dirname(filePath);
-                      
-                        fs.mkdirSync(dirPath, { recursive: true });
-                        fs.writeFileSync(filePath, data.toString());
+                        new PdfReader().parseBuffer(data, (err, item) => {
+                            if (err) {
+                                console.error("Error:", err)
+                            }else if (item && item.text) {
+                                const dateMatch = item.text.match(/(\d{1,2}\/\d{1,2}\/\d{4})/)
+                                if (dateMatch && dateMatch < new Date().toLocaleDateString('fr-FR')) {
+                                    console.warn(`Le fichier ${filename} contient une date de validité expirée : ${dateMatch[0]}.`);
+                                }
+                            };
+                        });
                     }
-                    
                 }catch(e) {
                     console.error('❌ Une erreur est survenue lors de l\'extraction du ZIP:', e.message);
                 }
